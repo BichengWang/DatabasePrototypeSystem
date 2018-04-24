@@ -1,0 +1,54 @@
+1. Basic information
+Team number (e.g., 01) : 18
+#1 Student ID : 64444637
+#1 Student Name : Bicheng Wang
+#2 Student ID : 27449622
+#2 Student Name : Xingyu Wu
+OS (bit) : CentOS Linux release 7.3.1611 (OpenLab-Andromeda)
+gcc version : gcc (GCC) 5.4.0
+
+
+2. Catalog information about Index
+- Show your catalog information about an index (tables, columns). 
+  We create a new meta info table managed by rbfm called "Indexes" and use this table to store information about all index tables. The columns and the corresponding information for "Indexes" are also recorded in meta info tables "Tables" and "Columns" in a similar fashion with project 2. When the relation manager is opened for the first time, "Indexes" is an empty file. If indexes are created, the information will be recorded in "Indexes". If relation manager is opened again, those meta info is retrieved from the three meta info tables. Index tables (the ones that store actual index entries) are managed by index manager (use ixFileHandle as file handle).
+
+
+3. Block Nested Loop Join (If you have implemented this feature)
+- Describe how your block nested loop join works (especially, how you manage the given buffers.)
+  Buffer is designed as in project description. We have also implemented two auxillary functions BNLJoin::loadBuffer() and BNLJoin::clearBuffer() to help us with initilization. DataUtils::getDataAtPosition() and DataUtils::compare() described in Implementation Detail is used to help us decide if we should join the data or not. If yes, then DataUtils::joinData() is called. One page from inner table is loaded and the attribute value is extracted to match with values in buffer, since buffer has a limitation of numPages * PAGE_SIZE, buffer were replaced by chunks of pages in outer table.
+
+
+4. Index Nested Loop Join (If you have implemented this feature)
+- Describe how your index nested loop join works.
+  As in this example INLJoin(leftIn, rightIn, cond), We define inner table iterator rightIn as a IndexScan instance. In getNextTuple(), while(outer->getNextTuple(this->outerData) != QE_EOF), we set rightIn iterator to conduct a EQ search for each and every this->outerData returned. if(inner->getNextTuple(this->innerData) != QE_EOF), the join condition is satisfied and DataUtils::joinData() is called to put the data to the output.
+
+
+5. Grace Hash Join (If you have implemented this feature)
+- Describe how your grace hash join works (especially, in-memory structure).
+  We have not implemented this feature.
+
+
+6. Aggregation
+- Describe how your aggregation (basic, group-based hash) works.
+  We have only implemented the basic version of aggregation. A struct called AggValue, which contains minValue, maxValue, avgValue, sumValue and countValue, is used to record the statistical information about the attribute being aggregated. Aggregate::getNextTuple() contains a while loop to scan the entire table. And while the table is being scanned, the AggValue struct is updated at the same time. Thus, getNextTuple() will return only one value with null indicator before hitting QE_EOF, this value is exactly what the corresponding testcases required.
+
+
+7. Implementation Detail
+- Have you added your own source file (.cc or .h)?
+  No.
+
+- Have you implemented any optional features? Then, describe them here.
+  No.
+
+- Other implementation details:
+  In project 2, we maintained a vector called AllTables<SingleTable> in class RelationManager. This time, we expanded the class SingleTable for it to hold its index data. Thus now, besides recording its own information, an instance of SingleTable also contains two vectors called indexes (of type SingleIndex) and columns (of type SingleColumn).
+  When RelationManager::createIndex() is called, the heap file is scanned, and the corresponding index entries are inserted to the new index table.
+  On the index table level, the workflow of RelationManager::updateEntry() is regarded as: (1) delete the index entry; (2) update tuple in heap file; (3) get new index entry of the updated tuple from heap file and insert into the index table.
+  For filter and project, we implemented a method class called DataUtils, in which functions commonly used by various iterators are defined.
+  The implementation of the Project class is to some extent similar to what of Aggregation class. Positions of corresponding attributes to be projected in raw data fetched from heap file are extracted with DataUtils::getDataPositions(), and the final projected data is prepared next.
+  In Filter class, instead of using DataUtils::getDataPositions(), we used another function in our method class DataUtils::getDataAtPosition() to get the value of the attribute to be filtered, if the raw data should be fetched is decided by DataUtils::compare().
+
+
+6. Other (optional)
+- Freely use this section to tell us about things that are related to the project 4, but not related to the other sections (optional)
+  We have tried to maintain a pointer of IndexManager in class RelationManager, but we encountered many problems regarding the IXFileHandle not being properly initialized, especially when indexScan::setIterator() is called. Thus, IndexManager is only created in functions in class RelationManager whenever it is required. This may seem very strange but we are out of tricks and desperate.
