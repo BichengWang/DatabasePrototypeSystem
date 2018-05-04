@@ -1,6 +1,7 @@
 # DatabasePrototypeSystem
 
-## A database prototype system follow UCI CS222P https://grape.ics.uci.edu/wiki/public/wiki/cs222p-2017-fall
+## A database prototype system follow UCI CS222P
+https://grape.ics.uci.edu/wiki/public/wiki/cs222p-2017-fall
 
 ## Four-Level implemented with seperate test cases.
 
@@ -32,9 +33,15 @@ support data insert, update, delete, and bulk load in B+ tree.
 Based on Relation Manger component, Query Engine component include:
   
  Relation Manager index scan iterator.
+ 
  Filter Interface: filter the tuple by selection condition. 
+ 
  Projection Interface: project out the value of attributes.
+ 
  Block Nested-Loop Join Interface: takes two iterators, leftIn as outer, rightIn as inner relation.
+ 
  Index Nested-Loop Join Interface: base on nested loop to join.
- Grace-Hash Join Interface: support "equal" join
+ 
+ Grace-Hash Join Interface: support "equal" join.
+ 
  Aggregate Interface: support max, min, sum, average, count.
