@@ -1,17 +1,18 @@
 # DatabasePrototypeSystem
 
 ## A database prototype system follow UCI CS222P
+
 https://grape.ics.uci.edu/wiki/public/wiki/cs222p-2017-fall
 
-## Four-Level implemented with seperate test cases.
+Four-Level implemented with seperate test cases.
 
-# Record-based File(RBF) folder: Record-Based File Manager (RBF) by Bicheng Wang:
+## Record-based File(RBF) folder: Record-Based File Manager (RBF) by Bicheng Wang:
 
   Page File(PF) component， provide facilities for higher-level control of file I/O of pages;
     
   Record-based File component, handle the record CRUD in file page system, support variable length data compressively save in page system.
 
-# Relation Manager(RM) folder: Relation Manager (RM) by Yuhang Wu
+## Relation Manager(RM) folder: Relation Manager (RM) by Yuhang Wu
 
 Base on the record-based file manager level, implmented relation management between different tables.
   
@@ -21,14 +22,14 @@ Two main tables: Tables' table, Columns' table.
 
 And other user tables.
 
-# Index Manager(IX) folder: Index Manager (IX) by Bicheng Wang
+## Index Manager(IX) folder: Index Manager (IX) by Bicheng Wang
 
 implement B+ tree to support range predicates:
   
 support data insert, update, delete, and bulk load in B+ tree.
 
 
-# Query Engine(QE) folder: Query Engine (QE) by Yuhang Wu & Bicheng Wang
+## Query Engine(QE) folder: Query Engine (QE) by Yuhang Wu & Bicheng Wang
 
 Based on Relation Manger component, Query Engine component include:
   
