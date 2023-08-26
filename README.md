@@ -1,4 +1,4 @@
-# DatabasePrototypeSystem
+# My Database Prototype System
 
 ## A database prototype system follow UCI CS222P
 
